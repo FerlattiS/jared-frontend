@@ -1,6 +1,7 @@
 import React, {useCallback} from "react";
-import { List, Segment } from "semantic-ui-react"; 
+import { List, Segment, Form } from "semantic-ui-react"; 
 import { observer } from "mobx-react-lite";
+import WorkedHoursService from "../../services/workedHours.service";
 
 /**
  * Worked Hour Item
@@ -8,10 +9,8 @@ import { observer } from "mobx-react-lite";
 
  export default observer( (props) => {
   const whItem = props.item;
+  const store = props.store;
   
-  function updateHours(newHours) {
-    console.log(newHours);
-  } 
 
   return (
     <div>
@@ -20,8 +19,8 @@ import { observer } from "mobx-react-lite";
           <List.Item key={whItem._id}>
           <List.Content> 
         Hours:   <div class="ui fluid input" >
-        <input name="hourInput" type="number" min="0" value={whItem.hours} onChange={() => {updateHours('x')}}/>                
-                        </div>
+        <Form.Input name="hours" type="number" min="0" max="24" value={whItem.hours} onChange={store.updateHours}/>               
+        </div>
             
           </List.Content>
         </List.Item>

@@ -18,12 +18,22 @@ export default observer((props) => {
   const authStore = useAuthStore();
   let selectedDate = moment('2015/11');
 
+  //const defaultEntity = {
+  //  day: selectedDate.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+  //  hours: 0,
+  //  clientId: '',
+  //  userId: ''
+  //};
+
   
   
   const localStore = useLocalStore(() => ({
     list: [],
     setList(value) {
       this.list = value;
+    },
+    updateHours(e, data) {
+     // whItem.hours = data.value ;
     },
     async getList() {
       const response = await WorkedHoursService.getHours(authStore.user._id, '5de7ba685a461b008ca4da09', selectedDate.year(), selectedDate.month());
@@ -57,7 +67,9 @@ export default observer((props) => {
       }
       this.setList(auxArray);
     }
-  }));
+  })
+  
+   );
 
   useEffect(() => {
     localStore.getList();
@@ -67,7 +79,7 @@ export default observer((props) => {
 
   return (
     <div className="ui container aligned">
-      <Header as="h3" icon="clock outline" content={`Worked Hours of ${selectedDate.format('MMMM')} ${selectedDate.year()}  `} />
+      <Header as="h3" icon="clock outline" content={`Worked Hours of ${selectedDate.format('MMMM')} ${selectedDate.year()}`} />
       <Segment.Group>
         <Segment attached color="blue" >
           <div className="ui container center aligned">
@@ -79,7 +91,7 @@ export default observer((props) => {
                   <div className="header">{new moment(whitem.day).add('hour',3).format('dddd')} </div>
                   <div className="description">{new moment(whitem.day).add('hour',3).date()}</div>
                   <div className="body">                                    
-                          <WorkedHourItem item={whitem} />
+                          <WorkedHourItem item={whitem} store={localStore} />
                   </div>
                 </div>
                  
